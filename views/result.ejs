@@ -1,0 +1,87 @@
+<html>
+<script src='/home/lenovo/Desktop/Adhip/index.js'> </script>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		.user-detail {
+			height: 100vh;
+			border: 2px solid #f1f1f1;
+			padding: 16px;
+			background-color: white;
+			width: 30%;
+		}
+
+		input {
+			width: 100%;
+			padding: 15px;
+			margin: 5px 0 22px 0;
+			display: inline-block;
+			border: none;
+			background: #f1f1f1;
+		}
+
+		input[type=text]:focus,
+		input[type=password]:focus {
+			background-color: #ddd;
+			outline: none;
+		}
+
+		button[type=submit] {
+			background-color: #434140;
+			color: #ffffff;
+			padding: 10px 20px;
+			margin: 8px 0;
+			border: none;
+			cursor: pointer;
+			width: 100%;
+			opacity: 0.9;
+			font-size: 20px;
+		}
+
+		label {
+			font-size: 18px;
+			;
+		}
+
+		button[type=submit]:hover {
+			background-color: #3d3c3c;
+		}
+	</style>
+</head>
+<body>
+<div class="table-data">
+	<h2> Your Seniors... </h2>
+	<table border="1">
+		<tr>
+			<th>Name</th>
+			<th>Roll No.</th>
+			<th>City</th>
+			<th>State</th>
+		</tr>
+
+		<%
+	        if(user.length!=0){
+	        user.forEach(function(data){
+	        %>
+		<tr>
+			<td><%=data.name %></td>
+			<td><%=data.rno %></td>
+			<td><%=data.city %></td>
+			<td><%=data.state %></td>
+		</tr>
+		<% }) %>
+		<% } else{ %>
+		<tr>
+			<td colspan="7">No Data Found</td>
+		</tr>
+		<% } %>
+	</table>
+</div>
+</body>
+
+</html>
