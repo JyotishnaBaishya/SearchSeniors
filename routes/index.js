@@ -1,33 +1,26 @@
 var express = require('express');
 var router = express.Router();
-var mysql = require('mysql');
+const { Client } = require('pg');
 
-var con = mysql.createConnection({
-	host: "localhost",
-	user: "root",
-	password: "root",
-	database: "ADHIP"
+const client = new Client({
+	connectionString: process.env.DATABASE_URL,
+	ssl: {
+		rejectUnauthorized: false
+	}
 });
+console.log(process.env.DATABASE_URL)
 router.get('/', function(req, res){
 	res.render('index');
 });
 router.post('/search', function (req, res) {
 	var state=req.body.sc;
-	con.connect(function (err) {
-		if (err) throw err;
-		console.log("Connected!");
-		var sql = "SELECT * FROM SENIORS WHERE state= ? OR city=?";
-		con.query(sql, [state, state], function (err, results, fields) {
-			if (err) throw err;
-			console.log(results);
-			req.session.user=results;
-			res.redirect('/result');
-		});
+	state=state.toLowerCase();
+	client.connect();
+	client.query('SELECT name, rno, city, state FROM SENIORS WHERE state = $1 OR city = $2;',[state, state], (err, results)=> {
+		if(err){console.log(err);}
+		console.log(results);
+		res.render('result', { user:results.rows });
 	});
 });
-router.get('/result', function(req, res){
-	res.render('result', {user: req.session.user});
-});
 
-
-module.exports = router;
+module.exports=router;
